@@ -1,4 +1,4 @@
-git
+### F3F4Perms
 
 Requires [packetevents](https://github.com/retrooper/packetevents) and optionally [LuckPerms](https://github.com/LuckPerms/LuckPerms)
 
