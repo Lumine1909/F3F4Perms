@@ -1,0 +1,9 @@
+[versions]
+spigot-api = "1.16.5-R0.1-SNAPSHOT"
+packetevents = "2.9.5"
+luckperms = "5.4"
+
+[libraries]
+spigot-api = { group = "org.spigotmc", name = "spigot-api", version.ref = "spigot-api" }
+packetevents = { group = "com.github.retrooper", name = "packetevents-spigot", version.ref = "packetevents" }
+luckperms = { group = "net.luckperms", name = "api", version.ref = "luckperms" }

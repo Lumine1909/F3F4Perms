@@ -1,0 +1,23 @@
+name: F3F4Perms
+version: 1.1-SNAPSHOT
+main: io.github.lumine1909.f3f4perms.F3F4PermsPlugin
+api-version: 1.13
+description: Give player f3+f4 permission to toggle game mode, while proceeding it with command.
+authors:
+  - Lumine1909
+depend:
+  - packetevents
+softdepend:
+  - LuckPerms
+commands:
+  f3f4perms:
+  f3nperm:
+permissions:
+  f3f4perms.use:
+    default: op
+  f3nperm.use:
+    default: op
+  f3f4perms.admin:
+    default: op
+  f3nperm.admin:
+    default: op
