@@ -4,6 +4,7 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityStatus;
+import io.github.lumine1909.f3f4perms.metrics.Metrics;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -36,6 +37,7 @@ public class F3F4PermsPlugin extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new F3F4PlayerListener(), this);
         PacketEvents.getAPI().getEventManager().registerListener(new F3F4PacketListener(), PacketListenerPriority.HIGHEST);
         luckPermsHook.register(this);
+        new Metrics(this, 27254);
     }
 
     @Override
