@@ -27,7 +27,7 @@ modrinth {
     projectId.set("f3f4perms")
     versionNumber.set(version as String)
     versionName.set("F3F4Perms $version")
-    versionType.set("beta")
+    versionType.set("release")
     uploadFile.set(tasks.jar)
     loaders.addAll("bukkit", "spigot", "paper", "purpur", "folia")
     dependencies.addAll(
