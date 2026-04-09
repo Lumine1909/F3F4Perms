@@ -17,12 +17,16 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class F3F4PermsPlugin extends JavaPlugin {
 
     public static F3F4PermsPlugin plugin;
 
-    private final LuckPermsHook luckPermsHook = new LuckPermsHook();
+    private static final Map<Player, Integer> currentLevel = new ConcurrentHashMap<>();
+    private static Metrics metrics;
 
     @Override
     public void onLoad() {
@@ -36,14 +40,15 @@ public class F3F4PermsPlugin extends JavaPlugin {
         PacketEvents.getAPI().init();
         Bukkit.getPluginManager().registerEvents(new F3F4PlayerListener(), this);
         PacketEvents.getAPI().getEventManager().registerListener(new F3F4PacketListener(), PacketListenerPriority.HIGHEST);
-        luckPermsHook.register(this);
-        new Metrics(this, 27254);
+        LuckPermsHook.register(this);
+        metrics = new Metrics(this, 27254);
     }
 
     @Override
     public void onDisable() {
         PacketEvents.getAPI().terminate();
-        luckPermsHook.unregister();
+        LuckPermsHook.unregister();
+        metrics.shutdown();
     }
 
     @Override
@@ -53,7 +58,7 @@ public class F3F4PermsPlugin extends JavaPlugin {
         }
         if (args.length == 1 && args[0].equalsIgnoreCase("forceupdate")) {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                updateOpLevel(player);
+                updateOpLevel(player, true);
             }
             sender.sendMessage(ChatColor.GREEN + "[F3F4Perms] Successfully update player's F3+F4 permission");
         }
@@ -65,8 +70,15 @@ public class F3F4PermsPlugin extends JavaPlugin {
         return args.length <= 1 ? Collections.singletonList("forceupdate") : Collections.emptyList();
     }
 
-    public void updateOpLevel(Player player) {
+    public void updateOpLevel(Player player, boolean force) {
+        if (PacketEvents.getAPI().getPlayerManager().getChannel(player) == null) {
+            return;
+        }
         int status = canUse(player) ? 28 : 24;
+        if (!force && Objects.equals(currentLevel.get(player), status)) {
+            return;
+        }
+        currentLevel.put(player, status);
         PacketEvents.getAPI().getPlayerManager().sendPacket(player, new WrapperPlayServerEntityStatus(player.getEntityId(), status));
     }
 
@@ -81,5 +93,9 @@ public class F3F4PermsPlugin extends JavaPlugin {
 
     public boolean isAdmin(CommandSender sender) {
         return sender.isOp() || sender.hasPermission("f3f4perms.admin") || sender.hasPermission("f3nperm.admin");
+    }
+
+    public void invalidate(Player player) {
+        currentLevel.remove(player);
     }
 }
