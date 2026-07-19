@@ -44,8 +44,24 @@ modrinth {
     gameVersions.addAll(generateVersions("26.1", 0, 1))
 }
 
+
+tasks {
+    withType<JavaCompile> {
+        options.encoding = "UTF-8"
+    }
+    processResources {
+        filteringCharset = Charsets.UTF_8.name()
+        val props = mapOf("version" to rootProject.version)
+        inputs.properties(props)
+        filesMatching("plugin.yml") {
+            expand(props)
+        }
+    }
+}
+
 fun generateVersions(mm: String, start: Int, end: Int): List<String> = (start..end).map { if (it == 0) mm else "$mm.$it" }
 
-
-java.sourceCompatibility = JavaVersion.VERSION_1_8
-java.targetCompatibility = JavaVersion.VERSION_1_8
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}

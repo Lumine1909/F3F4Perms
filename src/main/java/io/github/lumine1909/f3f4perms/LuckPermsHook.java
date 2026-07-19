@@ -3,7 +3,9 @@ package io.github.lumine1909.f3f4perms;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.event.EventSubscription;
-import net.luckperms.api.event.context.ContextUpdateEvent;
+import net.luckperms.api.event.node.NodeMutateEvent;
+import net.luckperms.api.model.user.User;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class LuckPermsHook {
@@ -15,9 +17,10 @@ public class LuckPermsHook {
             return;
         }
         LuckPerms luckPerms = LuckPermsProvider.get();
-        subscription = luckPerms.getEventBus().subscribe(ContextUpdateEvent.class, e -> {
-            if (e.getSubject() instanceof Player) {
-                FoliaUtil.runTaskLater(plugin, (Player) e.getSubject(), () -> plugin.updateOpLevel((Player) e.getSubject(), false), 1L);
+        subscription = luckPerms.getEventBus().subscribe(NodeMutateEvent.class, e -> {
+            if (e.getTarget() instanceof User) {
+                Player player = Bukkit.getPlayer(((User) e.getTarget()).getUniqueId());
+                FoliaUtil.runTaskLater(plugin, player, () -> plugin.updateOpLevel(player, false), 1L);
             }
         });
         plugin.getLogger().info("Successfully hooked into LuckPerms!");

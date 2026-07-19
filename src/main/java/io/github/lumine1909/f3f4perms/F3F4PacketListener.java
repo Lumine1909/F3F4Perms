@@ -39,6 +39,7 @@ public class F3F4PacketListener implements PacketListener {
         }
         if (entityStatusPacket.getStatus() <= 28 && entityStatusPacket.getStatus() >= 24) {
             entityStatusPacket.setStatus(28);
+            plugin.updateRecord(event.getPlayer(), 28);
         }
     }
 }

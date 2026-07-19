@@ -23,9 +23,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class F3F4PermsPlugin extends JavaPlugin {
 
-    public static F3F4PermsPlugin plugin;
-
     private static final Map<Player, Integer> currentLevel = new ConcurrentHashMap<>();
+    public static F3F4PermsPlugin plugin;
     private static Metrics metrics;
 
     @Override
@@ -78,8 +77,12 @@ public class F3F4PermsPlugin extends JavaPlugin {
         if (!force && Objects.equals(currentLevel.get(player), status)) {
             return;
         }
-        currentLevel.put(player, status);
+        updateRecord(player, status);
         PacketEvents.getAPI().getPlayerManager().sendPacket(player, new WrapperPlayServerEntityStatus(player.getEntityId(), status));
+    }
+
+    public void updateRecord(Player player, int level) {
+        currentLevel.put(player, level);
     }
 
     public void changeGameMode(Player player, GameMode gameMode) {
