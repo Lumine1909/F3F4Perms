@@ -8,18 +8,16 @@ import org.bukkit.plugin.Plugin;
 public class FoliaUtil {
 
     public static void runTask(Plugin plugin, Player player, Runnable runnable) {
-        if (FoliaScheduler.isFolia()) {
-            FoliaScheduler.getRegionScheduler().run(plugin, player.getLocation(), task -> runnable.run());
-        } else {
-            Bukkit.getScheduler().runTask(plugin, runnable);
+        if (player == null || runnable == null) {
+            return;
         }
+        FoliaScheduler.getRegionScheduler().run(plugin, player.getLocation(), task -> runnable.run());
     }
 
     public static void runTaskLater(Plugin plugin, Player player, Runnable runnable, long delay) {
-        if (FoliaScheduler.isFolia()) {
-            FoliaScheduler.getRegionScheduler().runDelayed(plugin, player.getLocation(), task -> runnable.run(), delay);
-        } else {
-            Bukkit.getScheduler().runTaskLater(plugin, runnable, delay);
+        if (player == null || runnable == null) {
+            return;
         }
+        FoliaScheduler.getRegionScheduler().runDelayed(plugin, player.getLocation(), task -> runnable.run(), delay);
     }
 }
