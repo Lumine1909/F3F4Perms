@@ -14,4 +14,12 @@ public class FoliaUtil {
             Bukkit.getScheduler().runTask(plugin, runnable);
         }
     }
+
+    public static void runTaskLater(Plugin plugin, Player player, Runnable runnable, long delay) {
+        if (FoliaScheduler.isFolia()) {
+            FoliaScheduler.getRegionScheduler().runDelayed(plugin, player.getLocation(), task -> runnable.run(), delay);
+        } else {
+            Bukkit.getScheduler().runTaskLater(plugin, runnable, delay);
+        }
+    }
 }

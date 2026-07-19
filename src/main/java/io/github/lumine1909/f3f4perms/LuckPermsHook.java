@@ -17,7 +17,7 @@ public class LuckPermsHook {
         LuckPerms luckPerms = LuckPermsProvider.get();
         subscription = luckPerms.getEventBus().subscribe(ContextUpdateEvent.class, e -> {
             if (e.getSubject() instanceof Player) {
-                plugin.updateOpLevel((Player) e.getSubject(), false);
+                FoliaUtil.runTaskLater(plugin, (Player) e.getSubject(), () -> plugin.updateOpLevel((Player) e.getSubject(), false), 1L);
             }
         });
         plugin.getLogger().info("Successfully hooked into LuckPerms!");
